@@ -12,7 +12,7 @@ app = Flask(__name__)
 API_KEY = os.environ.get("API_KEY")
 API_SECRET = os.environ.get("API_SECRET")
 
-client = Client(API_KEY, API_SECRET, testnet=True)
+client = Client(API_KEY, API_SECRET)
 client.API_URL = "https://testnet.binance.vision/api"
 
 SYMBOL = "BTCUSDT"
