@@ -13,6 +13,7 @@ API_KEY = os.environ.get("API_KEY")
 API_SECRET = os.environ.get("API_SECRET")
 
 client = Client(API_KEY, API_SECRET)
+client.session.headers.update({"User-Agent": "Mozilla/5.0"})
 client.API_URL = "https://testnet.binance.vision/api"
 
 SYMBOL = "BTCUSDT"
