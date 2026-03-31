@@ -1,44 +1,61 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
     <title>Testnet Assets</title>
     <style>
-        body { font-family: Arial; padding: 20px; background: #f0f0f0; }
-        .asset-box { background: #fff; padding: 20px; border-radius: 10px; width: 300px; margin: auto; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
-        h2 { text-align: center; }
-        p { font-size: 18px; margin: 5px 0; }
+        body {
+            font-family: Arial;
+            padding: 20px;
+            background: #f4f4f4;
+        }
+        table {
+            border-collapse: collapse;
+            width: 400px;
+        }
+        td, th {
+            border: 1px solid #ccc;
+            padding: 8px;
+            text-align: right;
+        }
+        th {
+            background: #eee;
+        }
+        .green { color: green; }
+        .red { color: red; }
     </style>
 </head>
 <body>
-    <div class="asset-box">
-        <h2>Spot Testnet Assets</h2>
-        <p id="btc_qty">BTC: ...</p>
-        <p id="usdt_qty">USDT: ...</p>
-        <p id="btc_price">BTC Price: ...</p>
-        <p id="btc_value">BTC Value: ...</p>
-        <p id="total_value">Total Value: ...</p>
-        <p id="unrealized_pl">P/L: ...</p>
-    </div>
 
-    <script>
-        async function fetchAssets() {
-            try {
-                const res = await fetch("/assets");
-                const data = await res.json();
+<h2>Binance Testnet Assets</h2>
 
-                document.getElementById("btc_qty").innerText = `BTC: ${data.BTC_qty}`;
-                document.getElementById("usdt_qty").innerText = `USDT: ${data.USDT_qty}`;
-                document.getElementById("btc_price").innerText = `BTC Price: ${data.BTC_price.toFixed(2)} USDT`;
-                document.getElementById("btc_value").innerText = `BTC Value: ${data.BTC_value.toFixed(2)} USDT`;
-                document.getElementById("total_value").innerText = `Total Value: ${data.Total_value.toFixed(2)} USDT`;
-                document.getElementById("unrealized_pl").innerText = `P/L: ${data.Unrealized_PL.toFixed(2)} USDT`;
-            } catch(err) {
-                console.error(err);
-            }
-        }
+<table>
+<tr><th>Asset</th><th>Value</th></tr>
+<tr><td>BTC Qty</td><td id="btc_qty">0</td></tr>
+<tr><td>BTC Value</td><td id="btc_value">0</td></tr>
+<tr><td>USDT</td><td id="usdt_qty">0</td></tr>
+<tr><td>Total</td><td id="total">0</td></tr>
+<tr><td>P/L</td><td id="pl">0</td></tr>
+</table>
 
-        fetchAssets();
-        setInterval(fetchAssets, 5000); // refresh every 5 seconds
-    </script>
+<script>
+async function load() {
+    const res = await fetch("/assets");
+    const d = await res.json();
+
+    document.getElementById("btc_qty").innerText = d.BTC_qty.toFixed(6);
+    document.getElementById("btc_value").innerText = d.BTC_value.toFixed(2);
+    document.getElementById("usdt_qty").innerText = d.USDT_qty.toFixed(2);
+    document.getElementById("total").innerText = d.Total_value.toFixed(2);
+
+    let pl = document.getElementById("pl");
+    pl.innerText = d.Unrealized_PL.toFixed(2);
+    pl.className = d.Unrealized_PL >= 0 ? "green" : "red";
+}
+
+load();
+setInterval(load, 5000);
+</script>
+
 </body>
 </html>
