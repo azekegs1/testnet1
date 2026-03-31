@@ -22,7 +22,7 @@ SYMBOL = "BTCUSDT"
 def index():
     return render_template("index.html")
 
-@app.route("/assets")
+@app.route("/templates")
 def assets():
     # Get BTC and USDT balances
     account = client.get_account()
